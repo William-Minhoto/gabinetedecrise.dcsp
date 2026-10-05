@@ -1,0 +1,50 @@
+GABINETE DE EMERGÊNCIA — CONEXÃO REAL COM GOOGLE SHEETS (V4)
+
+IMPORTANTE: esta versão usa JSONP para LEITURA da planilha. Isso evita o bloqueio CORS que fazia
+o painel continuar mostrando somente os dados internos.
+
+CONFIGURAÇÃO DO GOOGLE SHEETS
+1. Crie/abra a Planilha Google do Gabinete.
+2. Extensões > Apps Script.
+3. Substitua TODO o Code.gs pelo arquivo google_apps_script/Code.gs desta versão.
+4. Execute setupGabinete() uma vez e autorize.
+5. Confira as abas:
+   - Ocorrências Atuais
+   - Configurações
+   - Histórico
+6. Importe google_apps_script/Ocorrencias_Atuais.csv para “Ocorrências Atuais”, se necessário.
+
+IMPLANTAÇÃO — ESTA ETAPA É ESSENCIAL
+7. No Apps Script, clique em Implantar > Nova implantação > Aplicativo da Web.
+8. Executar como: você.
+9. Em “Quem pode acessar”, escolha uma opção que permita ao computador do painel acessar o Web App.
+10. Clique em Implantar.
+11. COPIE A URL QUE TERMINA EM /exec. Não use a URL /dev.
+12. Se você já tinha uma implantação antiga, vá em Implantar > Gerenciar implantações > Editar >
+    selecione “Nova versão” > Implantar. Sem isso, o Google continua executando o código antigo.
+
+NO PAINEL
+13. Abra iniciar.bat.
+14. Clique CONECTAR DRIVE.
+15. Cole a URL /exec.
+16. Para apenas ler alterações feitas diretamente na planilha, o token não é necessário.
+17. Salve a conexão.
+18. No canto superior direito deve aparecer:
+    GOOGLE SHEETS • SINCRONIZADO
+
+TESTE
+19. Na planilha, altere temporariamente um valor, por exemplo Desalojados.
+20. Aguarde até 15 segundos.
+21. O total e a ocorrência devem mudar no painel sem reiniciar.
+
+SE APARECER “GOOGLE SHEETS • ERRO DE CONEXÃO”
+- confirme que a URL termina em /exec;
+- confirme que a implantação foi atualizada para uma NOVA VERSÃO após trocar Code.gs;
+- confirme a permissão “Quem pode acessar”;
+- abra a URL /exec diretamente no navegador: ela deve mostrar um JSON com "ok":true e "ocorrencias".
+
+OBSERVAÇÃO SOBRE EDIÇÃO
+A leitura remota está preparada para funcionar diretamente com a planilha. Para máxima confiabilidade
+operacional, edite os dados pelo Google Sheets no celular/computador; o painel os recebe automaticamente.
+O botão “Atualizar Dados” continua disponível para o modo local. Uma próxima camada pode hospedar a
+administração dentro do próprio Apps Script para escrita remota sem limitações de CORS.

@@ -1,0 +1,53 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gabinete de Emergência</title><link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"></head><body>
+<header>
+  <div class="brandblock"><img class="dc-logo" src="static/assets/logo_defesa_civil.png" alt="Defesa Civil de São Paulo"><div class="brandtext"><b>DEFESA CIVIL</b><span>ESTADO DE SÃO PAULO</span></div></div>
+  <div class="headline">
+    <b id="titulo"></b>
+    <div class="datetime"><span id="datePretty">—</span><span class="sep">•</span><span id="timePretty">—</span><small>Horário de Brasília</small></div>
+  </div>
+  <div class="statusbox">
+    <img class="partners-logo" src="static/assets/logo_instituicoes.png" alt="Instituições participantes">
+    <div class="refreshline"><span id="syncDot" class="syncdot"></span><span id="syncText">Conectando</span></div>
+    <div class="countline">Próxima atualização em <b id="countdown">15s</b></div>
+    <div id="updated" class="lastupdate"></div>
+  </div>
+</header>
+<main>
+<section class="metrics" id="metrics"></section>
+<section class="occ"><div id="col1"></div><div id="col2"></div></section>
+</main>
+<div class="actions"><button id="configBtn">⚙ CONECTAR DRIVE</button><button id="adminBtn">✎ ATUALIZAR DADOS</button><button id="helpBtn" class="utilityBtn">? AJUDA</button><button id="printBtn" class="utilityBtn">▣ IMPRIMIR / PDF</button><button id="mapBtn">⌖ MAPA DE IMPACTOS</button></div>
+
+<div class="modal" id="helpModal"><div class="modalbox helpbox">
+<div class="modalhead"><div><b>AJUDA - PAINEL DO GABINETE</b><small>Orientações de uso e cuidados operacionais</small></div><button class="close">×</button></div>
+<div class="helpcontent">
+<section><h3>Como usar</h3><p>O painel consulta o banco de dados automaticamente. A bolinha verde indica conexão normal e a contagem mostra o tempo até a próxima leitura.</p>
+<p>Clique nos números dos indicadores para visualizar quais municípios compõem cada total. Em <b>Mapa de Impactos</b>, clique nos pontos para consultar os detalhes de cada município e utilize os filtros inferiores.</p></section>
+<section><h3>Atualização dos dados</h3><p>Para a operação remota, mantenha a planilha com a mesma estrutura de colunas. Alterações válidas são refletidas automaticamente no painel.</p></section>
+<section class="warning"><h3>O que não fazer</h3><p>Não renomeie as abas ou colunas da planilha, não apague Latitude/Longitude, não altere a URL de conexão sem necessidade, não exclua os arquivos das pastas <b>static</b> e <b>data</b> e não edite manualmente os arquivos do sistema durante a operação.</p></section>
+<section><h3>Relatório</h3><p>Use <b>IMPRIMIR / PDF</b> para abrir o relatório corporativo. Na janela de impressão, selecione <b>Salvar como PDF</b>. O relatório inclui indicadores, municípios, ocorrências e mapa.</p></section>
+</div></div></div><div class="modal" id="metricModal"><div class="modalbox metricbox">
+<div class="modalhead"><div><b id="metricTitle">DETALHAMENTO</b><small id="metricSubtitle"></small></div><button class="close">×</button></div>
+<div id="metricList" class="metric-list"></div></div></div>
+<div class="modal" id="mapModal"><div class="modalbox mapbox"><div class="modalhead"><div><b>MAPA DE IMPACTOS</b><small>Municípios com ocorrências registradas • clique nos pontos para consultar os dados</small></div><button class="close">×</button></div><div class="mapfilters">
+  <b>FILTRAR OCORRÊNCIAS</b>
+  <button class="mf active" data-filter="all">Todas</button>
+  <button class="mf" data-filter="obitos">Óbitos</button>
+  <button class="mf" data-filter="feridos">Feridos</button>
+  <button class="mf" data-filter="desabrigados">Desabrigados</button>
+  <button class="mf" data-filter="desalojados">Desalojados</button>
+  <button class="mf" data-filter="desaparecidos">Desaparecidos</button>
+</div><div id="map"></div><div class="legend"><span>MENOR IMPACTO</span><i></i><span>MAIOR IMPACTO</span><em>Camada regional: KML fornecido</em></div></div></div>
+
+<div class="modal" id="adminModal"><div class="modalbox adminbox"><div class="modalhead"><div><b>ATUALIZAÇÃO DO GABINETE</b><small>Edite o banco e salve. O painel recalcula tudo.</small></div><button class="close">×</button></div>
+<div class="topform"><label>Data <input id="fdata"></label><label>Atualizado em <input id="fatual"></label><label>Desaparecidos <input id="fdesap" type="number"></label></div>
+<div class="tablewrap"><table><thead><tr><th>Município</th><th>Desal.</th><th>Desab.</th><th>Feridos</th><th>Óbitos</th><th>Descrição</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="adminfoot"><button id="add">+ NOVA OCORRÊNCIA</button><button id="save">SALVAR E ATUALIZAR</button></div></div></div>
+<div class="modal" id="configModal"><div class="modalbox" style="max-width:720px;height:auto;margin:auto">
+<div class="modalhead"><div><b>CONECTAR AO GOOGLE DRIVE</b><small>Configure uma vez neste computador.</small></div><button class="close">×</button></div>
+<div style="padding:24px"><label>URL do Web App do Google Apps Script<input id="apiUrl" style="width:100%;margin:8px 0 18px;padding:12px"></label>
+<label>Token de edição<input id="editToken" type="password" style="width:100%;margin:8px 0 18px;padding:12px"></label>
+<button id="saveConfig" style="padding:12px 18px">SALVAR CONEXÃO</button></div></div></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script><script src="static/app.js"></script><script>document.getElementById("configBtn").onclick=()=>{document.getElementById("apiUrl").value=CONFIG.apiUrl;document.getElementById("editToken").value=CONFIG.editToken;document.getElementById("configModal").classList.add("open")};document.querySelector("#configModal .close").onclick=()=>document.getElementById("configModal").classList.remove("open");document.getElementById("saveConfig").onclick=()=>{localStorage.setItem("gabineteApiUrl",document.getElementById("apiUrl").value.trim());localStorage.setItem("gabineteEditToken",document.getElementById("editToken").value.trim());location.reload()};</script></body></html>

@@ -1,0 +1,18 @@
+GABINETE DE EMERGÊNCIA — PAINEL AUTOMÁTICO
+
+1. No Windows, dê dois cliques em iniciar.bat.
+2. O navegador abrirá automaticamente em http://127.0.0.1:8791
+3. Use ATUALIZAR DADOS para editar ocorrências.
+4. Os seis indicadores são recalculados automaticamente.
+5. O painel recarrega o banco a cada 15 segundos.
+6. MAPA DE IMPACTOS abre o mapa interativo no canto inferior direito.
+7. O mapa usa base CARTO/OpenStreetMap e, portanto, precisa de internet para os tiles.
+8. O banco fica em data/gabinete.json.
+
+Observação: novos municípios cadastrados pela tela aparecem no resumo imediatamente. Para aparecerem no mapa, é necessário informar latitude/longitude no JSON (a próxima evolução pode automatizar a geocodificação).
+
+
+CORREÇÃO DE SEGURANÇA DE CARREGAMENTO
+- O painel agora traz uma cópia local incorporada dos dados iniciais.
+- Mesmo se o servidor local ou Google Drive falhar, título, indicadores e ocorrências continuam visíveis.
+- Ao restabelecer a conexão, a sincronização volta automaticamente.
